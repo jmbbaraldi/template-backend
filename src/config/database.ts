@@ -1,11 +1,13 @@
 import { Sequelize } from "sequelize";
+import 'dotenv/config';
 
 const sequelize = new Sequelize (
-    'templatedb', 
-    'postgres', 
-    'postgres', 
+    process.env.POSTGRES_DB || 'templatedb', 
+    process.env.POSTGRES_USER || 'postgres', 
+    process.env.POSTGRES_PASSWORD, 
     {
-        host: 'localhost', 
+        host: process.env.POSTGRES_HOST || 'localhost',
+        port: process.env.POSTGRES_PORT ? parseInt(process.env.POSTGRES_PORT) : undefined,
         dialect: 'postgres'
     }
 );
