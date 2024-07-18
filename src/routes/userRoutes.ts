@@ -2,6 +2,7 @@ import { Express } from 'express';
 import userController from '../controllers/userController'
 
 export default (app: Express) => {
-    app.use('/users', userController.get)
-    app.use('/users/:id', userController.get)
+    app.get('/users', userController.get);
+    app.get('/users/:id', userController.get);
+    app.post('/users/register', userController.post);
 };

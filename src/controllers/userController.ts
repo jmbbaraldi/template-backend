@@ -1,7 +1,7 @@
 import UserModel from '../models/userModel';
 import { Request, Response } from 'express';
 
-const get = async(req: Request, res: Response) => {
+const get = async(req: Request, res: Response): Promise<Response> => {
     try {
         const id = req.params.id ? req.params.id.toString().replace(/\D/g, '') : null;
 
@@ -39,9 +39,49 @@ const get = async(req: Request, res: Response) => {
             error: errorMessage,
         })
     }
-}
+};
+
+const post = async(req: Request, res: Response): Promise<Response> => {
+    try {
+        const {
+            nome,
+            email,
+            senha,
+        } = req.body
+
+        const verifyEmail = await UserModel.findOne({where: {email}});
+
+        if(verifyEmail) {
+            return res.status(400).send({
+                message: 'Email already registered',
+                data: [],
+            });
+        }
+
+        await UserModel.create({
+            nome,
+            email,
+            senha,
+        });
+
+        return res.status(201).send({
+            message: 'User created!',
+            data: [],
+        });
+
+    } catch (error) {
+
+        const errorMessage = (error as Error).message;
+
+        return res.status(500).send({
+            message: 'An error occurred',
+            error: errorMessage,
+        });
+        
+    }
+};
 
 export default {
     get,
-    
+    post,
 }
