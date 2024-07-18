@@ -11,7 +11,7 @@ import Routes from './routes/index';
 require('./models/index');
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.API_PORT || 3000;
 
 const accessLogStream = fs.createWriteStream(
   path.join(__dirname, '../access.log'),

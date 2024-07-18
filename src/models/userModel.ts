@@ -23,6 +23,8 @@ const User = Sequelize.define('User', {
         type: DataTypes.STRING,
         allowNull: false,
     },
+}, {
+    tableName: 'users'
 }
 );
 
