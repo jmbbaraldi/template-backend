@@ -5,4 +5,5 @@ export default (app: Express) => {
     app.get('/users', userController.get);
     app.get('/users/:id', userController.get);
     app.post('/users/register', userController.post);
+    app.patch('/users/:id', userController.update);
 };

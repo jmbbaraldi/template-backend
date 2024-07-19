@@ -81,7 +81,41 @@ const post = async(req: Request, res: Response): Promise<Response> => {
     }
 };
 
+const update = async(req: Request, res: Response): Promise<Response> => {
+    const id = req.params.id ? req.params.id.toString().replace(/\D/g, '') : null;
+
+    if (!id) {
+        return res.status(400).send({
+            message: 'No id provided!',
+            data: [],
+        })
+    }
+
+    const response = await UserModel.findOne({where: { id } })
+
+    if (!response) {
+        return res.status(400).send({
+            message: 'This id does not exists!',
+            data: [],
+        })
+    }
+
+    if(req.body.senha) {
+        req.body.senha = null;
+    }
+    (Object.keys(req.body) as string[]).forEach((field) => {
+        (response as any)[field] = req.body[field];
+    });
+
+    await response.save();
+    return res.status(200).send({
+        message: `id: ${id} successfully updated!`,
+        data: response,
+    });
+};
+
 export default {
     get,
     post,
+    update,
 }
