@@ -114,8 +114,47 @@ const update = async(req: Request, res: Response): Promise<Response> => {
     });
 };
 
+const destroy = async(req: Request, res: Response): Promise<Response> => {
+    try {
+        const id = req.params.id ? req.params.id.toString().replace(/\D/g, '') : null;
+
+        if (!id) {
+            return res.status(400).send({
+                message: 'No id provided to destroy!',
+                data: [],
+            })
+        }
+
+        const response = await UserModel.findOne({where: { id } });
+
+        if (!response) {
+            return res.status(400).send({
+                message: 'This id does not exists!',
+                data: [],
+            })
+        }
+
+        await response.destroy();
+        return res.status(200).send({
+            message: `id: ${id} successfully destroyed`,
+            data: response,
+        });
+
+    } catch (error) {
+
+        const errorMessage = (error as Error).message;
+
+        return res.status(500).send({
+            message: 'An error occurred',
+            error: errorMessage,
+        });
+        
+    }
+};
+
 export default {
     get,
     post,
     update,
+    destroy,
 }

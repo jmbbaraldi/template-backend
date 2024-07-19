@@ -6,4 +6,5 @@ export default (app: Express) => {
     app.get('/users/:id', userController.get);
     app.post('/users/register', userController.post);
     app.patch('/users/:id', userController.update);
+    app.delete('/users/:id', userController.destroy);
 };
